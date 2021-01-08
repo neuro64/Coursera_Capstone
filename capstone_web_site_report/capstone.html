@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Capstone project</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            html{
+                margin:0;
+                padding:0;
+                background-color: #152238;
+                color:white;              
+            }
+            body{
+                width:800px;
+                height: 100vh;
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: 300;
+                line-height: 1.5;
+                text-align: justify;
+                margin:0 auto;
+                font-size: 18px;
+            }
+            img{
+                margin:20px 0 0 10px;                
+            }
+            figcaption{
+                margin-top:10px;
+                margin-bottom:40px;                
+            }
+            .showCharts{
+                display:flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+            }
+            a{
+                color:orange;
+            }
+            @media print{
+                body{ background-color:#FFFFFF; 
+                background-image:none; 
+                color:#000000 }                
+            }
+
+        </style>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div><h1>Capstone project: Finding the closeness between cities based on venue categories</h1></div>
+        <hr>
+        <div style="text-align: center;">Muhammed Zahit Gök<br>08.01.2020</div>
+        <hr>
+        <article>
+            <h1>1. Introduction</h1>
+            <div class="parofreport">
+                <h2>1.1 Description and Discussion of the background</h2>
+                <p>
+                    The capital cities especially having big population are the 
+                    important indicator to understand the trend and similarity between 
+                    the countries. In this study, we used the venue data of three 
+                    large cities namely New York, Toronto and Berlin. 
+                    New York is one of the biggest city of the USA. 
+                    It contains of 166 neighbourhoods comprised of various venue. 
+                    Toronto is the capital city of the economy and business centers. 
+                    Although this city is the center of important business, 
+                    it does not contain as much neighbourhood and venue as New York. 
+                    The last city Berlin is the capital and multicultural city of Germany. 
+                    The population of this city is about 4 million and includes 41 neighbourhood. 
+                    In this study, we aimed at identifying the closeness between cities based on the venue category. 
+                    We compared the Toronto and Berlin with New York and found which one is closer to New York.
+                </p>
+            </div>
+            <div class="parofreport">
+                <h2>1.2 Data Collection</h2>
+                <p>
+                    <ul>
+                        <li>All cities’ data related to Borough and 
+                            Neighbourhoods was collected from the web side Wikipedia 
+                        </li>
+                        <li>The longitude and latitude were obtained from the geocoding library of python. </li>
+                        <li>Regarding the venues and venue category, we used the foursquare API.</li>
+                    </ul> 
+                </p>
+            </div>
+            <div class="parofreport">
+                <h1>2. Methodology</h1>
+                <p>
+                    The data obtained from wikipedia and the data of the latitude-longitude(LL) values were 
+                    transmitted to the csv file so that we do not repeat the download process repetitively.
+                    After combining two tables containing wikipedia and LL data, we have tables including the columns as
+                    {Borough, Neighbourhood, Latitude, Longitude}. We used Four sqaure API with the values radius as 100
+                    and limit as 100 and got the venue and venue category in the neighbourhood. In order to show the point
+                    on the map the library folium was used. The total venues each city New York, Toronto and Berlin is shown the figures below.
+                    <div class="showCharts">
+                        <img src="./bar_1.png" alt="">
+                        <figcaption>Fig.1 - Count of Venues in New York.</figcaption>
+                        <img src="./bar_2.png" alt="">
+                        <figcaption>Fig.2 - Count of Venues in Toronto.</figcaption>
+                        <img src="./bar_3.png" alt="">
+                        <figcaption>Fig.3 - Count of Venues in Berlin.</figcaption>
+                    </div>
+                    In the neighbourhoods of New York, Downtown has the biggest number of venue and 
+                    in Toronto and Berlin, Commerce Court,Victory Hotel and Stiglitz neighbourhood 
+                    have much more venues. In order to determine which neighbourhood in Newyork and 
+                    Toronto are similar to each other, we used k-means clustering based on 10 categories
+                    as
+                     Café, Italian Restaurant, Coffee Shop, Bakery,
+                        Supermarket, 
+                   Sushi Restaurant,
+                    Spa, Restaurant, Asian Restaurant, 
+                   Burger Joint. 
+                    Before starting the clustering process, we concatenate the data of
+                    New York and Toronto. After that we transfom the table such that the data is converted
+                    into as 1 or 0 acording to the existence of the venue category in the neighbourhood. Moreover, we grouped each neighbourhood
+                    then got the mean of each venue category. To start the process of k-mean clustering, 
+                    we wanted to find the best k for clustering algorithm. we used a special library named as KElbowVisualizer performing
+                    elbow method. For the data Newyork and Toronto, we found the best k value 9 as shown the figure below.
+                    <div class="showCharts">
+                        <img src="./elbow_1.png" alt="Newyork and Toronto">
+                        <figcaption>Fig.4 - Finding the Best k value for the data Newyork and Toronto </figcaption>
+                        <img src="./elbow_2.png" alt="New york and Berlin">                        
+                        <figcaption>Fig.5 - Finding the Best k value for the data Newyork and Berlin </figcaption>
+                    </div>
+                    After performing k-means clustering, we got some neighbourhoods of different counties similar to each other.
+                    Visualization of which cluster contains of neighbourhood of the cities as observed in figure below.
+                    <div class="showCharts">
+                        <img src="./Screen Shot 2021-01-07 at 16.46.08.png" alt="">
+                        <figcaption>Fig.6 - the count of neighbourhood in the clusters based on the cities Newyork and Toronto </figcaption>
+                        <img src="./bar_4.png" alt=""> 
+                        <figcaption>Fig.7 - Bar plot of the count of neighbourhood in the clusters based on the cities Newyork and Toronto </figcaption>
+                                               
+                    </div>
+                    We also performed the same process for the data which is the 
+                    union of New York and Berlin. We found the best k as 8. We got the statistics about the cluster as shown below.
+                    <div class="showCharts">
+                        <img src="./Screen Shot 2021-01-07 at 16.46.45.png" alt="">
+                        <figcaption>Fig.8 - the count of neighbourhood in the clusters based on the cities Newyork and Berlin </figcaption>                       
+                        <img src="./bar_5.png" alt=""> 
+                        <figcaption>Fig.9 - Bar plot of the count of neighbourhood in the clusters based on the cities Newyork and Berlin </figcaption>
+                        
+                    </div>
+                    This kind of result gives us some information about the closeness between neighbourhoods and cities.
+                    However, we need to find the result numerically to understand whether Toronto or Berlin is close to 
+                    New York. We took advantage of the cosine similarity metric by using the data 
+                    containing of the distribution of the venue category of each city. We got the sum of
+                    each category in each city. As an example of the distribution of new york is shown below.
+                    <div class="showCharts">
+                        <img src="./Screen Shot 2021-01-07 at 16.47.14.png" alt="">
+                        <figcaption>Fig.10 - the count of neighbourhood  based on the cities Newyork, Toronto and Berlin </figcaption>                       
+                                               
+                    </div>
+                    After performing cosine similarity metric to all cities, we got the table 
+                    including similarity score as shown with heat map.
+                    <div class="showCharts">
+                        <img src="./heatmap.png" alt="">
+                        <figcaption>Fig.11 - the cosine similarity score of the cities Newyork, Toronto and Berlin </figcaption>                       
+                    </div>
+                    we can conclude that Toronto seems more similar to the city New York The similarity score between the mentioned cities is
+                    0.95. After performing these techniques, we want to show the statistics about 
+                    the total venue categories in all cities with tree map.                      
+                    <div class="showCharts">
+                        <img src="./tree_map.png" alt="">
+                        <figcaption>Fig.12 - Total count of venue category based on the cities Newyork, Toronto and Berlin </figcaption>                       
+                    </div>
+                    It is imported to note that we did not put the folium figures 
+                    in the report. The reason is that the physical distance between cities
+                    does not enable to show the neighbourhoods similarity in one figure. In this case, 
+                    the folium figure  exists in the <a href="http://">jupyter notebook web site</a> 
+                    so that you can analyse the mentioned cities with the world map.                    
+                </p>
+            </div>
+            <div class="parofreport">
+                <h1>3. Discussion</h1>
+                <p>
+                    These large and important cities can be a sample to show the trends of the country. 
+                    In this study, we found the similarity between cities by using k-means algorithm
+                    and cosine similarity metric.  We used a certain number of venue category
+                    in our approaches. If we increase the category number, the result may be 
+                    better. Moreover, radius which determines the area of search can be increased. Thus, we may
+                    find better similarity. We also gather some statistics about cities, neighbourhoods and the clusters.
+                    At the end of our study, we got the statistical resut from the data consisting of three cities.
+
+                </p>
+            </div>
+            <div class="parofreport">
+                <h1>4. Conclusion</h1>
+                <p>
+                  By performing statistical approaches on the big cities, we can find similarity
+                  and solve the problems in the identical cities with these similarities. The big cities are the 
+                  good sample for analysing the countries.                  
+                </p>
+            </div>
+        </article>
+        
+        <script src="" async defer></script>
+    </body>
+</html>
